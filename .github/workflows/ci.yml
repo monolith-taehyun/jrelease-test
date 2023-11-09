@@ -66,7 +66,7 @@ jobs:
 
   version:
     runs-on: macos-latest
-    if: github.repository_owner == 'gotson' && github.ref == 'refs/heads/main'
+    if: github.repository_owner == 'monolith-taehyun' && github.ref == 'refs/heads/main'
     outputs:
       version_current: ${{ steps.versions.outputs.version_current }}
       version_next: ${{ steps.versions.outputs.version_next }}
@@ -115,15 +115,6 @@ jobs:
         with:
           distribution: 'liberica'
           java-version: '21'
-      - name: Nexus publish
-        uses: gradle/gradle-build-action@v2
-        env:
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSPHRASE }}
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.MAVENCENTRAL_USER }}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.MAVENCENTRAL_PASSWORD }}
-        with:
-          arguments: publishToSonatype closeAndReleaseSonatypeStagingRepository
       - name: Release commit and push
         uses: EndBug/add-and-commit@v9
         if: inputs.perform_release
